@@ -1,3 +1,3 @@
-I built a Streamlit dashboard that previews the FEMA dataset, shows a histogram of repairAmount, and a boxplot of repairAmount by TSA eligibility.
-The histogram highlights that most households receive little or no repair assistance, with a small number receiving much larger amounts. The boxplot shows that TSA-eligible households tend to receive higher repair amounts and have a wider spread of repair funding compared to non-eligible households.
-The app is deployed on Streamlit Cloud at: 
+streamlit
+pandas
+plotly
