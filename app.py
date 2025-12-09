@@ -12,15 +12,15 @@ st.set_page_config(
 
 @st.cache_data
 def load_data():
-    # Load directly from instructor's public URL
+    # Load data directly from instructor URL
     url = "https://storage.googleapis.com/info_450/IndividualAssistanceHousingRegistrantsLargeDisasters%20(1).csv"
     df = pd.read_csv(url, low_memory=False)
 
-    # Basic cleaning for the columns we use
     df["repairAmount"] = pd.to_numeric(df["repairAmount"], errors="coerce").fillna(0)
     df["tsaEligible"] = pd.to_numeric(df["tsaEligible"], errors="coerce")
 
     return df
+
 
 
 def main():
