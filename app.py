@@ -23,9 +23,14 @@ st.write("Exploring repair assistance and TSA eligibility for disaster survivors
 # Load data
 @st.cache_data
 def load_data():
-    df = pd.read_csv("IndividualAssistanceHousingRegistrantsLargeDisasters (2).csv", low_memory=False)
+    # Load directly from  public URL
+    url = "https://storage.googleapis.com/info_450/IndividualAssistanceHousingRegistrantsLargeDisasters%20(1).csv"
+    df = pd.read_csv(url, low_memory=False)
+
+  
     df["repairAmount"] = pd.to_numeric(df["repairAmount"], errors="coerce").fillna(0)
     df["tsaEligible"] = pd.to_numeric(df["tsaEligible"], errors="coerce")
+
     return df
 
 df = load_data()
