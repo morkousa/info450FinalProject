@@ -12,26 +12,29 @@ st.set_page_config(
 
 @st.cache_data
 def load_data():
-    # Load data directly from instructor URL
+    """
+    Load FEMA data from the instructor's public Google Cloud bucket.
+    This avoids huge file uploads and keeps the data consistent.
+    """
     url = "https://storage.googleapis.com/info_450/IndividualAssistanceHousingRegistrantsLargeDisasters%20(1).csv"
     df = pd.read_csv(url, low_memory=False)
 
+    # Basic cleaning for columns we need
     df["repairAmount"] = pd.to_numeric(df["repairAmount"], errors="coerce").fillna(0)
     df["tsaEligible"] = pd.to_numeric(df["tsaEligible"], errors="coerce")
 
     return df
 
 
-
 def main():
     st.title("FEMA Disaster Relief Dashboard")
     st.write("Exploring repair assistance and TSA eligibility for disaster survivors.")
 
-    # Load data
+    # Load data once, cached by Streamlit
     df = load_data()
 
     # -----------------------------
-    # Data preview
+    # Data Preview
     # -----------------------------
     st.subheader("Data Preview")
     st.write(df.head())
@@ -48,6 +51,7 @@ def main():
         title="Distribution of Repair Amounts",
         labels={"repairAmount": "Repair Amount (USD)"}
     )
+
     st.plotly_chart(fig_hist, use_container_width=True)
 
     st.markdown(
@@ -63,6 +67,7 @@ def main():
     # -----------------------------
     st.subheader("Boxplot: Repair Amount by TSA Eligibility")
 
+    # Filter to valid TSA labels (0/1)
     df_box = df[df["tsaEligible"].isin([0, 1])].copy()
     df_box["tsaEligibleLabel"] = df_box["tsaEligible"].map(
         {0: "0 - Not Eligible", 1: "1 - Eligible"}
@@ -78,6 +83,7 @@ def main():
             "repairAmount": "Repair Amount (USD)"
         }
     )
+
     st.plotly_chart(fig_box, use_container_width=True)
 
     st.markdown(
